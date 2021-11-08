@@ -28,6 +28,19 @@ self.addEventListener('activate', function (event) {
    * TODO - Part 2 Step 3
    * Create a function as outlined above, it should be one line
    */
+   var cacheAllowlist = ['pages-cache-v1', 'blog-posts-cache-v1'];
+
+   event.waitUntil(
+     caches.keys().then(function(cacheNames) {
+       return Promise.all(
+         cacheNames.map(function(cacheName) {
+           if (cacheAllowlist.indexOf(cacheName) === -1) {
+             return caches.delete(cacheName);
+           }
+         })
+       );
+     })
+   );
 });
 
 // Intercept fetch requests and store them in the cache
@@ -36,4 +49,15 @@ self.addEventListener('fetch', function (event) {
    * TODO - Part 2 Step 4
    * Create a function as outlined above
    */
+    event.respondWith(
+    caches.match(event.request)
+    .then(function(response) {
+      // Cache hit - return response
+      if (response) {
+        return response;
+      }
+      return fetch(event.request);
+    }
+  )
+);
 });
