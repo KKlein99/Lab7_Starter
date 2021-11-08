@@ -190,7 +190,7 @@ function bindEscKey() {
    * if the escape key is pressed, use your router to navigate() to the 'home'
    * page. This will let us go back to the home page from the detailed page.
    */
-  document.addEventListener('keydown',(event)=>{
+  document.addEventListener('keydown',function(event){
     if(event.key=='Escape')
       router.navigate('home');
   })
@@ -217,7 +217,7 @@ function bindPopstate() {
    * so your navigate() function does not add your going back action to the history,
    * creating an infinite loop
    */
-  window.addEventListener('popstate',(event)=>{
+  window.addEventListener('popstate',function(event){
     if(event.state!=null)
       router.navigate(event.state.page,true);
     else{
